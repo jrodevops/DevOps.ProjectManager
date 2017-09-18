@@ -1,0 +1,34 @@
+﻿@model DevOps.ProjectManager.ViewModels.ProjectsFormViewModel
+@{
+    ViewBag.Title = "ProjectsForm";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>@Model.Title</h2>
+
+@using (Html.BeginForm("Save", "Projects"))
+{
+    <div class="form-group">
+        @Html.LabelFor(p => p.Name)
+        @Html.TextBoxFor(p=>p.Name, new { @class = "form-control" })
+        @Html.ValidationMessageFor(p=>p.Name)
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(p => p.Description)
+        @Html.TextBoxFor(p => p.Description, new { @class = "form-control" })
+        @Html.ValidationMessageFor(p => p.Description)
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(p => p.StatusId)
+        @Html.DropDownListFor(p => p.StatusId, new SelectList(Model.Statuses, "Id", "Name"), "Select status", new { @class = "form-control" })
+        @Html.ValidationMessageFor(p => p.StatusId)
+    </div>
+    @Html.HiddenFor(p=>p.Id)
+    @Html.AntiForgeryToken()
+    <button type="submit" class="btn btn-primary">Save</button>
+}
+
+@section scripts
+{
+    @Scripts.Render("~/bundles/jqueryval")
+}
