@@ -61,7 +61,7 @@ namespace DevOps.ProjectManager.Controllers
             return View("ProjectsForm", viewModel);
         }
 
-        public ActionResult Delete(int id)
+        public void Delete(int id)
         {
             Project project = _context.Projects.SingleOrDefault(p => p.Id == id);
             if(project == null)
@@ -72,7 +72,7 @@ namespace DevOps.ProjectManager.Controllers
             _context.Projects.Remove(project);
             _context.SaveChanges();
 
-            return View("Index");
+            //return View("Index");
         }
 
         public ActionResult Save(Project project)

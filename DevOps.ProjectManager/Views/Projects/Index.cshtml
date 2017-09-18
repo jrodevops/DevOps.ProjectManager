@@ -8,16 +8,19 @@
 <h2>Projects</h2>
 
 @Html.ActionLink("New project", "New", "Projects", null, new { @class = "btn btn-primary" })
+
 <table id="projects" class="table table-bordered table-hover">
     <thead>
         <tr>
             <th>Name</th>
             <th>Status</th>
-            <th>Date updated</th>
+            <th>Date modified</th>
             <th>Date created</th>
             <th>Actions</th>
         </tr>
-        @foreach (Project project in Model)
+    </thead>
+    <tbody>
+        @*@foreach (Project project in Model)
         {
             <tr>
                 <td>@Html.ActionLink(@project.Name, "Edit", "Projects", new { @project.Id }, null)</td>
@@ -25,10 +28,65 @@
                 <td>@project.DateUpdated.ToLongDateString()</td>
                 <td>@project.DateCreated.ToLongDateString()</td>
                 <td>
-                    @Html.ActionLink("Edit", "Edit", "Projects", new { @project.Id }, new { @class= "btn btn-link" })
+                    @Html.ActionLink("Edit", "Edit", "Projects", new { @project.Id }, new { @class = "btn btn-link" })
                     @Html.ActionLink("Delete", "Delete", "Projects", new { @project.Id }, new { @class = "btn btn-link js-delete" })
                 </td>
             </tr>
-        }
-    </thead>
+        }*@
+    </tbody>
 </table>
+
+@section scripts
+{
+    <script>
+        $(document).ready(function () {
+            $("#projects").DataTable({
+                ajax: {
+                    url: "/api/projects",
+                    dataSrc: ""
+                },
+                columns: [
+                    {
+                        data: "name",
+                        render: function (data, type, project) {
+                            return "<a href='/projects/edit/" + project.id + "'>" + project.name + "</a>";
+                        }
+                    },
+                    {
+                        data: "status.name"
+                    },
+                    {
+                        data: "dateUpdated"
+                    },
+                    {
+                        data: "dateCreated"
+                    },
+                    {
+                        data: "id",
+                        render: function (data) {
+                            return "<button class='btn-link js-delete' data-project-id=" + data + ">Delete</button>";
+                        }
+                    }
+                ]
+            });
+
+
+            $("#projects").on("click", ".js-delete", function () {
+                var button = $(this);
+
+                bootbox.confirm("Are you sure you want to delete this customer?", function (result) {
+                    if (result) {
+                        $.ajax({
+                            url: "/api/projects/" + button.attr("data-project-id"),
+                            method: "DELETE",
+                            success: function () {
+                                alert("SUCCESFULL");
+                                table.row(button.parents("tr")).remove().draw();
+                            }
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+}

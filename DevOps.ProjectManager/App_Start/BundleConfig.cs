@@ -11,8 +11,10 @@ namespace DevOps.ProjectManager
             bundles.Add(new ScriptBundle("~/bundles/lib").Include(
                         "~/Scripts/jquery-{version}.js",
                         "~/Scripts/bootstrap.js",
-                      "~/Scripts/respond.js",
-                        "~/Scripts/bootbox.js"));
+                        "~/Scripts/respond.js",
+                        "~/Scripts/bootbox.js",
+                        "~/scripts/datatables/jquery.datatables.js",
+                        "~/scripts/datatables/datatables.bootstrap.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
                         "~/Scripts/jquery.validate*"));
@@ -24,6 +26,7 @@ namespace DevOps.ProjectManager
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap-lumen.css",
+                      "~/content/datatables/css/datatables.bootstrap.css",
                       "~/Content/site.css"));
         }
     }
