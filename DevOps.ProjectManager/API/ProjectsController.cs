@@ -1,4 +1,5 @@
-﻿using DevOps.ProjectManager.DTO;
+﻿using AutoMapper;
+using DevOps.ProjectManager.DTO;
 using DevOps.ProjectManager.Models;
 using System;
 using System.Collections.Generic;
@@ -24,18 +25,39 @@ namespace DevOps.ProjectManager.API
             return _context.Projects.Include(p => p.Status).ToList().Select(AutoMapper.Mapper.Map<Project, ProjectDto>);
         }
 
+        // PUT /api/projects/{id}
+        [HttpPut]
+        public void UpdateProject(int id, ProjectDto projectDto)
+        {
+            if(!ModelState.IsValid)
+            {
+                throw new HttpResponseException(HttpStatusCode.BadRequest);
+            }
+
+            Project projectInDb = _context.Projects.SingleOrDefault(p => p.Id == id);
+            if(projectInDb == null)
+            {
+                throw new HttpResponseException(HttpStatusCode.NotFound);
+            }
+
+            Mapper.Map(projectDto, projectInDb);
+            _context.SaveChanges();
+        }
+
         // DELETE /api/projects/{id}
         [HttpDelete]
         public void DeleteProject(int id)
         {
-            //Project project = _context.Projects.SingleOrDefault(p => p.Id == id);
-            //if(project == null)
-            //{
-            //    throw new HttpResponseException(HttpStatusCode.NotFound);
-            //}
+            Project project = _context.Projects.SingleOrDefault(p => p.Id == id);
+            if (project == null)
+            {
+                throw new HttpResponseException(HttpStatusCode.NotFound);
+            }
 
-            //_context.Projects.Remove(project);
-            //_context.SaveChanges();
+            _context.Projects.Remove(project);
+            _context.SaveChanges();
+
+            RedirectToRoute("Index", "Projects");
         }
     }
 }

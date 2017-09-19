@@ -1,0 +1,12 @@
+﻿@model DevOps.ProjectManager.Models.Project
+
+<div id="divMargins">
+    <p>
+        <h2>@Model.Name</h2>
+
+        <p>Description: @Model.Description</p>
+        <li>Status: @Model.Status.Name</li>
+        <li>Last updated: @Model.DateUpdated.ToLongDateString()</li>
+        <li>Date created: @Model.DateCreated.ToLongDateString()</li>
+    </p>
+</div>

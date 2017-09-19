@@ -23,18 +23,32 @@ namespace DevOps.ProjectManager.Controllers
             return View(projects);
         }
 
+        //[Route("/projects/details/{id}")]
+        //public ActionResult Details(int id)
+        //{
+        //    Project projectInDb = _context.Projects.SingleOrDefault(p => p.Id == id);
+        //    if(projectInDb == null)
+        //    {
+        //        return HttpNotFound("Project not found");
+        //    }
+
+        //    return View(projectInDb);
+        //}
+
         [Route("/projects/details/{id}")]
+        [Route("/projects/details/{id}", Name = "DetailsExt")]
         public ActionResult Details(int id)
         {
-            Project projectInDb = _context.Projects.SingleOrDefault(p => p.Id == id);
-            if(projectInDb == null)
+            Project projectInDb = _context.Projects.Include(p=>p.Status).SingleOrDefault(p => p.Id == id);
+            if (projectInDb == null)
             {
                 return HttpNotFound("Project not found");
             }
 
-            return View(projectInDb);
+            return PartialView("DetailsExt", projectInDb);
         }
-        
+
+
         public ActionResult New()
         {
             ProjectsFormViewModel viewModel = new ProjectsFormViewModel

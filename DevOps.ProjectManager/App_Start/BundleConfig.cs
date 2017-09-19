@@ -27,6 +27,7 @@ namespace DevOps.ProjectManager
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap-lumen.css",
                       "~/content/datatables/css/datatables.bootstrap.css",
+                      "~/Content/devops.css",
                       "~/Content/site.css"));
         }
     }
