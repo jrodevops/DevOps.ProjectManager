@@ -30,21 +30,5 @@ namespace DevOps.ProjectManager.Models
 
         [Required]
         public DateTime DateCreated { get; set; }
-
-        public string Title
-        {
-            get
-            {
-                if (Id == 0)
-                {
-                    return "New issue";
-                }
-                else
-                {
-                    return "Edit issue";
-                }
-            }
-            set { }
-        }
     }
 }

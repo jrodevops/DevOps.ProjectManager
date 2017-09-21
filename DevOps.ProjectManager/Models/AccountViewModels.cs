@@ -49,9 +49,8 @@ namespace DevOps.ProjectManager.Models
     public class LoginViewModel
     {
         [Required]
-        [Display(Name = "Email")]
-        [EmailAddress]
-        public string Email { get; set; }
+        [Display(Name = "Username")]
+        public string Username { get; set; }
 
         [Required]
         [DataType(DataType.Password)]
@@ -64,6 +63,10 @@ namespace DevOps.ProjectManager.Models
 
     public class RegisterViewModel
     {
+        [Required]
+        [StringLength(256, ErrorMessage = "The username must be atleast {2}", MinimumLength = 3)]
+        public string Username { get; set; }
+
         [Required]
         [EmailAddress]
         [Display(Name = "Email")]

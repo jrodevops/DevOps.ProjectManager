@@ -9,6 +9,7 @@ using System.Web.Mvc;
 
 namespace DevOps.ProjectManager.Controllers
 {
+    [Authorize]
     public class ProjectsController : Controller
     {
         private ApplicationDbContext _context { get; set; }

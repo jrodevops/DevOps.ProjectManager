@@ -25,6 +25,7 @@ namespace DevOps.ProjectManager.Controllers
             return View();
         }
 
+        [Authorize(Roles = "CanAddIssues")]
         public ActionResult New()
         {
             IssuesFormViewModel viewModel = new IssuesFormViewModel
