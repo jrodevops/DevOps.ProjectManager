@@ -21,7 +21,7 @@
     <tbody></tbody>
 </table>
 
-<div id="mainIssueDetails" style="display:none">
+@*<div id="mainIssueDetails" style="display:none">
     <button id="closeIssueDetails" class="btn btn-primary">Close</button>
     <div id="issueDetails" class="shadowBox">
 
@@ -33,7 +33,54 @@
     <div id="issueEdit" class="shadowBox">
 
     </div>
+</div>*@
+
+<!-- Modal - Issue Edit -->
+<div class="modal fade" id="modalIssueEdit" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="vertical-alignment-helper">
+        <div class="modal-dialog vertical-align-center">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">Issue edit</h4>
+
+                </div>
+                <div class="modal-body" id="issueEdit"></div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    @*<button type="button" class="btn btn-primary">Save changes</button>*@
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+
+<!-- Modal - Issue Details -->
+<div class="modal fade" id="modalIssueDetails" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="vertical-alignment-helper">
+        <div class="modal-dialog vertical-align-center">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">Issue details</h4>
+
+                </div>
+                <div class="modal-body" id="issueDetails"></div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    @*<button type="button" class="btn btn-primary">Save changes</button>*@
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 @section scripts
 {
     <script>
@@ -67,7 +114,7 @@
                         render:
                         function (data)
                         {
-                            return "<button id='issuedelete' class='btn-link js-delete' data-issue-id=" + data + ">Delete</button> <button class='btn-link js-edit' data-issue-id=" + data + ">Edit</button> <button class='btn-link js-details' data-issue-id=" + data + ">Details</button>";
+                            return "<button id='issuedelete' class='btn-link js-delete' data-issue-id=" + data + ">Delete</button> <button  data-toggle='modal' data-target='#modalIssueEdit' class='btn-link js-edit' data-issue-id=" + data + ">Edit</button> <button data-toggle='modal' data-target='#modalIssueDetails' class='btn-link js-details' data-issue-id=" + data + ">Details</button>";
                         }
                     }
                 ]
@@ -98,10 +145,6 @@
 
             //Show elements
             $('#issueDetails').load(url, { id: projectId });
-            $('#mainIssueDetails').show();
-
-            //Hide elements
-            $('#mainIssueEdit').hide();
         });
 
         $("#issues").on("click", ".js-edit", function () {
@@ -112,17 +155,6 @@
 
             //Show elements
             $('#issueEdit').load(url, { id: projectId });
-            $('#mainIssueEdit').show();
-
-            //Hide elements
-            $('#mainIssueDetails').hide();
         });
-
-        $('#closeIssueDetails').on("click", function () {
-            $('#mainIssueDetails').hide();
-        })
-        $('#closeIssueEdit').on("click", function () {
-            $('#mainIssueEdit').hide();
-        })
     </script>    
 }
