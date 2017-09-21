@@ -1,4 +1,5 @@
-﻿@model DevOps.ProjectManager.ViewModels.ProjectsFormViewModel
+﻿@using DevOps.ProjectManager.Models
+@model DevOps.ProjectManager.ViewModels.ProjectsFormViewModel
 @{
     ViewBag.Title = "ProjectsForm";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -20,7 +21,7 @@
     </div>
     <div class="form-group">
         @Html.LabelFor(p => p.StatusId)
-        @Html.DropDownListFor(p => p.StatusId, new SelectList(Model.Statuses, "Id", "Name"), "Select status", new { @class = "form-control" })
+        @Html.DropDownListFor(p => p.StatusId, new SelectList(Model.Statuses, "Id", "Name", "Requested"), "Select status", new { @class = "form-control" })
         @Html.ValidationMessageFor(p => p.StatusId)
     </div>
     @Html.HiddenFor(p=>p.Id)

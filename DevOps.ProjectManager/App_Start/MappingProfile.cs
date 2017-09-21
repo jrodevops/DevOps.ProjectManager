@@ -12,8 +12,12 @@ namespace DevOps.ProjectManager.App_Start
     {
         public MappingProfile()
         {
+            //Project
             Mapper.CreateMap<Project, ProjectDto>();
             Mapper.CreateMap<ProjectDto, Project>();
+            //Issues
+            Mapper.CreateMap<Issue, IssueDto>();
+            Mapper.CreateMap<IssueDto, Issue>();
         }
     }
 }

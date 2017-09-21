@@ -1,0 +1,128 @@
+﻿@model IEnumerable<DevOps.ProjectManager.Models.Issue>
+
+@{
+    ViewBag.Title = "Issues";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Issues</h2>
+@Html.ActionLink("New issue", "New", "Issues", null, new { @class = "btn btn-primary" })
+<table id="issues" class="table table-bordered table-hover">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Priority</th>
+            <th>Project</th>
+            <th>Date updated</th>
+            <th>Date created</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody></tbody>
+</table>
+
+<div id="mainIssueDetails" style="display:none">
+    <button id="closeIssueDetails" class="btn btn-primary">Close</button>
+    <div id="issueDetails" class="shadowBox">
+
+    </div>
+</div>
+
+<div id="mainIssueEdit" style="display:none">
+    <button id="closeIssueEdit" class="btn btn-primary">Close</button>
+    <div id="issueEdit" class="shadowBox">
+
+    </div>
+</div>
+@section scripts
+{
+    <script>
+        $(document).ready(function () {
+            $("#issues").DataTable({
+                ajax:
+                {
+                    url: "/api/issues",
+                    dataSrc: ""
+                },
+                columns:
+                [
+                    {
+                        data: "name",
+                    },
+                    {
+                        data: "priority.name"
+                    },
+                    {
+                        data: "project.name"
+                    },
+                    {
+                        data: "dateUpdated",
+                        format: 'dd-mm-yyyy hh:mm:ss'
+                    },
+                    {
+                        data: "dateCreated"
+                    },
+                    {
+                        data: "id",
+                        render:
+                        function (data)
+                        {
+                            return "<button id='issuedelete' class='btn-link js-delete' data-issue-id=" + data + ">Delete</button> <button class='btn-link js-edit' data-issue-id=" + data + ">Edit</button> <button class='btn-link js-details' data-issue-id=" + data + ">Details</button>";
+                        }
+                    }
+                ]
+            });
+        });
+
+        $("#issues").on("click", ".js-delete", function () {
+                var button = $(this);
+
+                bootbox.confirm("Are you sure you want to delete this issue?", function (result) {
+                    if (result) {
+                        $.ajax({
+                            url: "/api/issues/" + button.attr("data-issue-id"),
+                            method: "DELETE",
+                            success: function () {
+                                $("#issues").row(button.parents("tr")).remove().draw();
+                            }
+                        });
+                    }
+                });
+            });
+
+        $("#issues").on("click", ".js-details", function () {
+            var button = $(this);
+            var projectId = button.attr("data-issue-id")
+            var url = '@Url.Action("DetailsExt", "Issues")'
+            url += "/" + projectId
+
+            //Show elements
+            $('#issueDetails').load(url, { id: projectId });
+            $('#mainIssueDetails').show();
+
+            //Hide elements
+            $('#mainIssueEdit').hide();
+        });
+
+        $("#issues").on("click", ".js-edit", function () {
+            var button = $(this);
+            var projectId = button.attr("data-issue-id")
+            var url = '@Url.Action("Edit", "Issues")'
+            url += "/" + projectId
+
+            //Show elements
+            $('#issueEdit').load(url, { id: projectId });
+            $('#mainIssueEdit').show();
+
+            //Hide elements
+            $('#mainIssueDetails').hide();
+        });
+
+        $('#closeIssueDetails').on("click", function () {
+            $('#mainIssueDetails').hide();
+        })
+        $('#closeIssueEdit').on("click", function () {
+            $('#mainIssueEdit').hide();
+        })
+    </script>    
+}

@@ -1,0 +1,39 @@
+﻿@model DevOps.ProjectManager.ViewModels.IssuesFormViewModel
+@{
+    ViewBag.Title = "IssuesForm";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>IssuesForm</h2>
+
+@using (Html.BeginForm("Save", "Issues"))
+{
+    <div class="form-group">
+        @Html.LabelFor(i=>i.Name)
+        @Html.TextBoxFor(i=>i.Name, new { @class = "form-control" })
+        @Html.ValidationMessageFor(i=>i.Name)
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(i => i.Description)
+        @Html.TextAreaFor(i => i.Description, new { @class = "form-control" })
+        @Html.ValidationMessageFor(i => i.Description)
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(i => i.ProjectId)
+        @Html.DropDownListFor(i => i.ProjectId, new SelectList(Model.Projects, "Id", "Name"), "Selected project", new { @class = "form-control" })
+        @Html.ValidationMessageFor(i => i.ProjectId)
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(i => i.PriorityId)
+        @Html.DropDownListFor(i => i.PriorityId, new SelectList(Model.Priorities, "Id", "Name"), "Selected priority", new { @class = "form-control" })
+        @Html.ValidationMessageFor(i => i.PriorityId)
+    </div>
+    @Html.HiddenFor(i=>i.Id)
+    @Html.AntiForgeryToken()
+    <button type="submit" class="btn btn-primary">Save</button>
+}
+
+@section scripts
+{
+    @Scripts.Render("~/bundles/jqueryval")
+}

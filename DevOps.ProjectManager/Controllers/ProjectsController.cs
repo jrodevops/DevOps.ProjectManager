@@ -36,7 +36,6 @@ namespace DevOps.ProjectManager.Controllers
         //}
 
         [Route("/projects/details/{id}")]
-        [Route("/projects/details/{id}", Name = "DetailsExt")]
         public ActionResult Details(int id)
         {
             Project projectInDb = _context.Projects.Include(p=>p.Status).SingleOrDefault(p => p.Id == id);
@@ -45,17 +44,27 @@ namespace DevOps.ProjectManager.Controllers
                 return HttpNotFound("Project not found");
             }
 
+            return View("Details", projectInDb);
+        }
+        [Route("/projects/details/{id}")]
+        public ActionResult DetailsExt(int id)
+        {
+            Project projectInDb = _context.Projects.Include(p => p.Status).SingleOrDefault(p => p.Id == id);
+            if (projectInDb == null)
+            {
+                return HttpNotFound("Project not found");
+            }
+
             return PartialView("DetailsExt", projectInDb);
         }
-
 
         public ActionResult New()
         {
             ProjectsFormViewModel viewModel = new ProjectsFormViewModel
             {
-                Statuses = _context.ProjectStatuses.ToList()
+                Statuses = _context.ProjectStatuses.Where(i=>i.Id == ProjectStatusId.Requested).ToList()
             };
-            return View("ProjectsForm", viewModel);
+            return PartialView("ProjectsForm", viewModel);
         }
 
         [Route("/projects/edit/{id}")]
@@ -116,7 +125,7 @@ namespace DevOps.ProjectManager.Controllers
 
                 projectInDb.Name = project.Name;
                 projectInDb.Description = project.Description;
-                projectInDb.Status = project.Status;
+                projectInDb.StatusId = project.StatusId;
                 projectInDb.DateUpdated = DateTime.Now;
             }
 

@@ -1,11 +1,62 @@
 ﻿@model DevOps.ProjectManager.Models.Project
-@{
-    ViewBag.Title = "Details";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+
+<div id="divMargins">
+    <p>
+        <h2>@Model.Name</h2>
+
+    <p>Description: @Model.Description</p>
+    <li>Status: @Model.Status.Name</li>
+    <li>Last updated: @Model.DateUpdated.ToLongDateString()</li>
+    <li>Date created: @Model.DateCreated.ToLongDateString()</li>
+    </p>
+</div>
+
+<table id="issues" class="table table-bordered table-hover">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Priority</th>
+            <th>Date updated</th>
+            <th>Date created</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody></tbody>
+</table>
+
+@section scripts
+{
+    <script>
+        $(document).ready(function () {
+            $("#issues").DataTable({
+                ajax:
+                {
+                    url: "/api/issues/" + @Model.Id,
+                    dataSrc: ""
+                },
+                columns:
+                [
+                    {
+                        data: "name",
+                    },
+                    {
+                        data: "priority.name"
+                    },
+                    {
+                        data: "dateUpdated"
+                    },
+                    {
+                        data: "dateCreated"
+                    },
+                    {
+                        data: "id",
+                        render:
+                        function (data) {
+                            return "<button id='issuedelete' class='btn-link js-delete' data-issue-id=" + data + ">Delete</button> <button class='btn-link js-edit' data-issue-id=" + data + ">Edit</button> <button class='btn-link js-details' data-issue-id=" + data + ">Details</button>";
+                        }
+                    }
+                ]
+            });
+        });
+    </script>
 }
-
-<h2>@Model.Name</h2>
-
-<li>@Model.Status.Name</li>
-<li>@Model.DateUpdated.ToLongDateString()</li>
-<li>@Model.DateCreated.ToLongDateString()</li>

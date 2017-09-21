@@ -7,7 +7,7 @@
 
 <h2>Projects</h2>
 
-@Html.ActionLink("New project", "New", "Projects", null, new { @class = "btn btn-primary" })
+@Html.ActionLink("New project", "New", "Projects", null, new { @class = "btn btn-primary js-newproject" })
 
 <table id="projects" class="table table-bordered table-hover">
     <thead>
@@ -22,13 +22,22 @@
     <tbody></tbody>
 </table>
 
-<div class="shadowBox" id="detailsPartial">
+<div id="mainProjectDetails" style="display:none">
+    <button id="closeProjectDetails" class="btn btn-primary">Close</button>
+    <div id="projectDetails" class="shadowBox">
 
+    </div>
 </div>
 
-@section scripts
+<div id="mainProjectEdit" style="display:none">
+    <button id="closeProjectEdit" class="btn btn-primary">Close</button>
+    <div id="projectEdit" class="shadowBox">
+
+    </div>
+</div>
+    @section scripts
 {
-    <script>
+        <script>
         $(document).ready(function () {
             $("#projects").DataTable({
                 ajax: {
@@ -38,10 +47,9 @@
                 columns: [
                     {
                         data: "name",
-                        render: function (data, type, project) {
-                            return "<button class='btn-link js-details' data-project-id=" + project.id + ">" + project.name + "</button>"
-                            //return "<a href='/projects/edit/" + project.id + "'>" + project.name + "</a>";
-                        }
+                        //render: function (data, type, project) {
+                        //    return "<button class='btn-link js-details' data-project-id=" + project.id + ">" + project.name + "</button>"
+                        //}
                     },
                     {
                         data: "status.name"
@@ -55,7 +63,7 @@
                     {
                         data: "id",
                         render: function (data) {
-                            return "<button id='projectdetails' class='btn-link js-delete' data-project-id=" + data + ">Delete</button>";
+                            return "<button id='projectdetails' class='btn-link js-delete' data-project-id=" + data + ">Delete</button> <button class='btn-link js-edit' data-project-id=" + data + ">Edit</button> <button class='btn-link js-details' data-project-id=" + data + ">Details</button>";
                         }
                     }
                 ]
@@ -78,14 +86,46 @@
                 });
             });
 
+            $("#projects").on("click", ".js-edit", function () {
+                var button = $(this);
+                var projectId = button.attr("data-project-id")
+                var url = "/projects/edit/" + projectId;
+
+                $('#projectEdit').load(url, { id: projectId })
+
+                //Show corresponding div's
+                $('#mainProjectEdit').show();
+
+                //hide other div's
+                $('#mainProjectDetails').hide();
+            });
+
             $("#projects").on("click", ".js-details", function () {
                 var button = $(this);
                 var projectId = button.attr("data-project-id")
-                var url = '@Url.Action("Details", "Projects")'
+                var url = '@Url.Action("DetailsExt", "Projects")'
                 url += "/" + projectId
 
-                $('#detailsPartial').load(url, { id: projectId });
+                $('#projectDetails').load(url, { id: projectId });
+
+                //Show corresponding div's
+                $('#mainProjectDetails').show();
+
+                //hide other div's
+                $('#mainProjectEdit').hide();
             });
+
+            $("#btnNewProject").on("click", ".js-newproject", function () {
+                var url = '@Url.Action("New", "Projects")'
+                $('#newProject').load(url);
+            });
+
+            $('#closeProjectDetails').on("click", function () {
+                $('#mainProjectDetails').hide();
+            })
+            $('#closeProjectEdit').on("click", function () {
+                $('#mainProjectEdit').hide();
+            })
         });
-    </script>
-}
+        </script>
+    }

@@ -3,8 +3,5 @@
     -webkit-box-shadow: 0 3px 15px 0 #000000;
     -moz-box-shadow: 0 3px 15px 0 #000000;
     box-shadow: 0 3px 15px 0 #000000;
-}
-
-#divMargins {
-    
+    padding: 20px;
 }
