@@ -236,6 +236,10 @@
     <Compile Include="Migrations\201709200929036_UpdatedIssuesModelWithAnnotations.Designer.cs">
       <DependentUpon>201709200929036_UpdatedIssuesModelWithAnnotations.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201709211931332_AddUserToProjectAndIssueModel.cs" />
+    <Compile Include="Migrations\201709211931332_AddUserToProjectAndIssueModel.Designer.cs">
+      <DependentUpon>201709211931332_AddUserToProjectAndIssueModel.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\ApplicationDbContext.cs" />
@@ -531,6 +535,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201709200929036_UpdatedIssuesModelWithAnnotations.resx">
       <DependentUpon>201709200929036_UpdatedIssuesModelWithAnnotations.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201709211931332_AddUserToProjectAndIssueModel.resx">
+      <DependentUpon>201709211931332_AddUserToProjectAndIssueModel.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

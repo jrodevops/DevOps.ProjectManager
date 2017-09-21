@@ -109,11 +109,20 @@ namespace DevOps.ProjectManager.Controllers
                 };
             }
 
+            ApplicationUser user = _context.Users.FirstOrDefault(u => u.UserName == User.Identity.Name);
+            if (user == null)
+            {
+                return HttpNotFound("User not found");
+            }
+
             if(project.Id == 0)
             {
                 project.DateUpdated = DateTime.Now;
                 project.DateCreated = DateTime.Now;
-
+                project.CreatedById = user.Id;
+                project.CreatedBy = user;
+                project.UpdatedById = user.Id;
+                project.UpdatedBy = user;
                 _context.Projects.Add(project);
             }
             else
@@ -128,6 +137,8 @@ namespace DevOps.ProjectManager.Controllers
                 projectInDb.Description = project.Description;
                 projectInDb.StatusId = project.StatusId;
                 projectInDb.DateUpdated = DateTime.Now;
+                projectInDb.UpdatedById = user.Id;
+                projectInDb.UpdatedBy = user;
             }
 
             _context.SaveChanges();

@@ -9,14 +9,31 @@ namespace DevOps.ProjectManager.Models
     public class Project
     {
         public int Id { get; set; }
+
         [Required]
         [StringLength(255)]
         public string Name { get; set; }
+
         public string Description { get; set; }
+
         [Required]
         [Display(Name = "Status")]
         public int StatusId { get; set; }
+
         public ProjectStatus Status { get; set; }
+
+        [Required]
+        [Display(Name="Created by")]
+        public string CreatedById { get; set; }
+
+        public ApplicationUser CreatedBy { get; set; }
+
+        [Display(Name = "Updated by")]
+        public string UpdatedById { get; set; }
+
+        public ApplicationUser UpdatedBy { get; set; }
+
+
         public DateTime DateCreated { get; set; }
         public DateTime DateUpdated { get; set; }
 

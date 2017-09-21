@@ -25,7 +25,7 @@ namespace DevOps.ProjectManager.Controllers
             return View();
         }
 
-        [Authorize(Roles = "CanAddIssues")]
+        [Authorize(Roles = RoleName.CanManageIssues)]
         public ActionResult New()
         {
             IssuesFormViewModel viewModel = new IssuesFormViewModel
@@ -37,6 +37,7 @@ namespace DevOps.ProjectManager.Controllers
         }
 
         [Route("/issues/edit/{id}")]
+        [Authorize(Roles = RoleName.CanManageIssues)]
         public ActionResult Edit(int id)
         {
             Issue issueInDb = _context.Issues.SingleOrDefault(i => i.Id == id);
@@ -76,6 +77,7 @@ namespace DevOps.ProjectManager.Controllers
             return PartialView("DetailsExt", issue);
         }
 
+        [Authorize(Roles = RoleName.CanManageIssues)]
         public ActionResult Save(Issue issue)
         {
             if(!ModelState.IsValid)
@@ -86,11 +88,21 @@ namespace DevOps.ProjectManager.Controllers
                     Priorities = _context.Priorities.ToList()
                 };
             }
+            ApplicationUser user = _context.Users.FirstOrDefault(u => u.UserName == User.Identity.Name);
+            if (user == null)
+            {
+                return HttpNotFound("User not found");
+            }
 
             if (issue.Id == 0)
             {
                 issue.DateCreated = DateTime.Now;
                 issue.DateUpdated = DateTime.Now;
+                issue.CreatedById = user.Id;
+                issue.CreatedBy = user;
+                issue.UpdatedById = user.Id;
+                issue.UpdatedBy = user;
+
                 _context.Issues.Add(issue);
             }
             else
@@ -106,6 +118,9 @@ namespace DevOps.ProjectManager.Controllers
                 issueInDb.PriorityId = issue.PriorityId;
                 issueInDb.ProjectId = issue.ProjectId;
                 issueInDb.DateUpdated = DateTime.Now;
+                issueInDb.UpdatedById = user.Id;
+                issueInDb.UpdatedBy = user;
+
             }
 
             _context.SaveChanges();
