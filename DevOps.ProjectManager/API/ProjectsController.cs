@@ -22,7 +22,7 @@ namespace DevOps.ProjectManager.API
         // GET /api/projects
         public IEnumerable<ProjectDto> GetProjects()
         {
-            return _context.Projects.Include(p => p.Status).ToList().Select(AutoMapper.Mapper.Map<Project, ProjectDto>);
+            return _context.Projects.Include(p => p.UpdatedBy).Include(p => p.CreatedBy).Include(p => p.Status).ToList().Select(Mapper.Map<Project, ProjectDto>);
         }
 
         // PUT /api/projects/{id}

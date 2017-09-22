@@ -22,7 +22,7 @@ namespace DevOps.ProjectManager.API
         // GET /api/issues
         public IEnumerable<IssueDto> GetIssues()
         {
-            return _context.Issues.Include(p=>p.Priority).Include(p => p.Project).ToList().Select(AutoMapper.Mapper.Map<Issue, IssueDto>);
+            return _context.Issues.Include(p => p.UpdatedBy).Include(p => p.CreatedBy).Include(p=>p.Priority).Include(p => p.Project).ToList().Select(AutoMapper.Mapper.Map<Issue, IssueDto>);
         }
 
         // GET /api/issues/{Id}

@@ -20,7 +20,7 @@ namespace DevOps.ProjectManager.Controllers
         // GET: Projects
         public ActionResult Index()
         {
-            IEnumerable<Project> projects = _context.Projects.Include(p => p.Status).ToList();
+            IEnumerable<Project> projects = _context.Projects.Include(p => p.UpdatedBy).Include(p => p.CreatedBy).Include(p => p.Status).ToList();
             return View(projects);
         }
 
